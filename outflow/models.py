@@ -13,10 +13,19 @@ class CashOut(models.Model):
 
 class Debt(models.Model):
 	cash_out 		= models.ForeignKey(CashOut, on_delete=models.PROTECT)
-	loan 			= models.OneToOneField(Loan, on_delete=models.CASCADE)
 
+	source 			= models.CharField(max_length=100, blank=True, null=True)
 	date 			= models.DateTimeField(auto_now_add=True)
 	amount 			= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	to 				= models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+	is_active		= models.BooleanField(default=True)
+
+class LoanPayment(models.Model):
+	debt 	= models.ForeignKey(Debt, on_delete=models.CASCADE)
+	loan 	= models.ForeignKey(Loan, on_delete=models.CASCADE, blank=True, null=True)
+	amount 	= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	date 	= models.DateTimeField(auto_now_add=True)
 
 	from_savings	= models.BooleanField(default=False)
 
@@ -26,12 +35,19 @@ class Loss(models.Model):
 
 	date		= models.DateTimeField(auto_now_add=True)
 	amount		= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	is_active		= models.BooleanField(default=True)
 
 class Expense(models.Model):
 	cash_out 		= models.ForeignKey(CashOut, on_delete=models.PROTECT)
-	name 			= models.CharField(max_length=100)
-	amount 			= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	source 			= models.CharField(max_length=100)
 
 	date			= models.DateTimeField(auto_now_add=True)
+	is_active		= models.BooleanField(default=True)
+
+class ExpenseIn(models.Model):
+	expense 		= models.ForeignKey(Expense, on_delete=models.CASCADE, blank=True, null=True)
+	date			= models.DateTimeField(auto_now_add=True)
+	amount			= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	is_active		= models.BooleanField(default=True)
 
 	from_savings	= models.BooleanField(default=False)

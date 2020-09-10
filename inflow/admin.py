@@ -8,6 +8,7 @@ from . models import (
 	Investment,
 	Profit,
 	Loan,
+	Saving,
 	)
 
 admin.site.register(CashIn)
@@ -17,4 +18,5 @@ admin.site.register(Other)
 admin.site.register(Investment)
 admin.site.register(Profit)
 admin.site.register(Loan)
+admin.site.register(Saving)
 

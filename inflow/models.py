@@ -26,8 +26,21 @@ class Salary(CommonFields):
 class Gift(CommonFields):
 	pass
 
-class Other(CommonFields):
-	pass
+class Other(models.Model):
+	cash_in		= models.ForeignKey(CashIn, on_delete=models.PROTECT)
+
+	source		= models.CharField(max_length=100)
+	date 		= models.DateTimeField(auto_now_add=True)
+	is_active	= models.BooleanField(default=True)
+
+class OtherIn(models.Model):
+	other 	= models.ForeignKey(Other, on_delete=models.PROTECT)
+
+	amount		= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+	date 		= models.DateTimeField(auto_now_add=True)
+
+	is_active 	= models.BooleanField(default=True)
+	savings 	= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
 class Investment(models.Model):
 	cash_in 	= models.ForeignKey(CashIn, on_delete=models.PROTECT)
@@ -46,4 +59,9 @@ class Profit(models.Model):
 	savings 	= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
 class Loan(CommonFields):
-	to 	= models.DateTimeField(auto_now_add=True)
+	pass
+
+
+class Saving(models.Model):
+	cash_in	= models.OneToOneField(CashIn, on_delete=models.PROTECT)
+	amount 	= models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
